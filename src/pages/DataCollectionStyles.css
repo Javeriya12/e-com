@@ -1,0 +1,17 @@
+.data-collection-container{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.data-collection-content-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.data-collection-product-image{
+    width:312px;
+    height: 312px;
+   
+}
