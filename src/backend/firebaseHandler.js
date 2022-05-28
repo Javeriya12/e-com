@@ -1,11 +1,12 @@
 
 import { initializeApp } from "firebase/app";
-import {getStorage} from "firebase/storage"
+import {getStorage} from "firebase/storage";
+import {getDatabase} from "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD1nk8OnzfQVOnS8odpbLPWksqWjxV6pVM",
   authDomain: "full-stack-example-22405.firebaseapp.com",
-  databaseURL: "gs://full-stack-example-22405.appspot.com",
+  databaseURL: "https://full-stack-example-22405-default-rtdb.firebaseio.com",
   projectId: "full-stack-example-22405",
   storageBucket: "full-stack-example-22405.appspot.com",
   messagingSenderId: "66340861554",
@@ -16,3 +17,4 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const firebaseStorage=getStorage(app);
+export const firebaseDatabase=getDatabase(app);

@@ -3,6 +3,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import DataCollectionPages from './pages/DataCollectionPages';
+import ProdRecordList from './productrecordlist/prodRecordList';
 
 
 let theme = createTheme({
@@ -22,6 +23,7 @@ function App() {
    <BrowserRouter>
    <Routes>
      <Route path='/' element={<DataCollectionPages/>}/>
+     <Route path='/Record-list' element={<ProdRecordList/>}/>
    </Routes>
    </BrowserRouter>
     </ThemeProvider>

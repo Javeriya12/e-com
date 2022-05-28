@@ -2,8 +2,10 @@ import { Button, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import './DataCollectionStyles.css';
 import uploadimg from '../assests/uploadimg.png';
-import { ref ,uploadBytes,getDownloadURL} from "firebase/storage";
-import { firebaseStorage } from "../backend/firebaseHandler";
+import { ref as storageref ,uploadBytes,getDownloadURL} from "firebase/storage";
+import { firebaseDatabase, firebaseStorage } from "../backend/firebaseHandler";
+import { set,ref } from "firebase/database";
+import { useNavigate } from "react-router-dom";
 
 const DataCollectionPages=()=>{
 
@@ -14,6 +16,8 @@ const DataCollectionPages=()=>{
         productMRP:""
 
     });
+
+    const nav = useNavigate();
 
     useEffect(()=>{
         if(!productInfo.productPrice){   
@@ -48,7 +52,7 @@ const DataCollectionPages=()=>{
         tempElement.setAttribute('type',"file");
         tempElement.onchange=async (event)=>{
             const file=event.target.files[0];
-            const fileRef=ref(firebaseStorage,'TEMP-FOLDER/file');
+            const fileRef=storageref(firebaseStorage,'TEMP-FOLDER/file');
             await uploadBytes(fileRef,file);
             const downloadurl=await getDownloadURL(fileRef);
             setproductInfo({
@@ -61,6 +65,23 @@ const DataCollectionPages=()=>{
         tempElement.click();
     }
 
+    const handleSign=async()=>{
+        try{
+            const recordRef=ref(firebaseDatabase,`E-COMMERCE/${productInfo.productName}`);
+            await set(recordRef,productInfo);           
+            setproductInfo({
+                productName:"",
+                productPrice:"",
+            productMRP:""
+            
+        })
+        nav("/Record-list");         
+        }
+        catch(err){
+            alert(err);
+        }
+    }
+
     return(
         <div className="data-collection-container">
             <div className="data-collection-content-box">
@@ -68,7 +89,7 @@ const DataCollectionPages=()=>{
                 <TextField name={"productName"} value={productInfo.productName} onChange={handleChange} sx={{width:'600px',marginBottom:'15px'}} id="outlined-basic" label="Product Name" variant="outlined" />
                 <TextField name={"productPrice"} type={"number"} value={productInfo.productPrice} onChange={handleChange} sx={{width:'600px',marginBottom:'15px'}} id="outlined-basic" label="Product Price" variant="outlined" />
                 <TextField value={productInfo.productMRP} sx={{width:'600px',marginBottom:'15px'}} id="outlined-basic" label=" MRP" variant="outlined" />
-                <Button variant="contained">Save Product</Button>
+                <Button variant="contained" onClick={handleSign}>Save Product</Button>
             </div>
           
         </div>
